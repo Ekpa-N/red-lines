@@ -108,8 +108,8 @@ const hop = (e) => {
 const jump = (e) => {
     jumpTimerId = setInterval(() => {
         pointerBottomSpace = e.target.offsetTop    
-        otherPointerBottomSpace = e.target.offsetTop - 10
-        thePointer.style.top = pointerBottomSpace -5 +'px'
+        // otherPointerBottomSpace = e.target.offsetTop - 10
+        thePointer.style.top = pointerBottomSpace -10 +'px'
         upTimerId.push(pointerBottomSpace)
         if (upTimerId.length === 1) {
             fall()
@@ -127,11 +127,11 @@ const fall = () => {
         }
     },100)
 }
+thePointer.addEventListener('click', jump)    
 
 const start = () => {
     gameStart = setInterval(boxPicker, 1000)
     gameRunning = setInterval(lineMover, 150) 
-    thePointer.addEventListener('click', jump)    
 }
 
 const stop = () => {
