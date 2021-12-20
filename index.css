@@ -1,6 +1,8 @@
 .canvas {
     width: 520px;
     height: 520px;
+    min-width: 520px;
+    min-height: 520px;
     background-color: black;
     display: flex;
     flex-wrap: wrap;
@@ -21,6 +23,23 @@
 
 .selected {
     background-color: green;
+}
+#board {
+    display: flex;
+}
+
+#timer {
+    width: 200px;
+    height: 100px;
+    min-width: 200px;
+    min-height: 100px;
+    display: flex;
+    margin-left: 5px;
+}
+
+.time {
+    display: inline-block;
+    font-size: 80px;
 }
 
 #pointer{

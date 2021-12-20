@@ -127,17 +127,66 @@ const fall = () => {
         }
     },100)
 }
-thePointer.addEventListener('click', jump)    
+thePointer.addEventListener('click', jump)   
 
+// Timer
+let msTens = document.getElementById('ms-tens')
+let msHundreds = document.getElementById('ms-hundreds')
+let seconds = document.getElementById('seconds')
+
+let secs = 0
+let msHuns = 0
+let msTen = 0
+const clockTimer = () => {
+    secondsCounter = () => {
+        msTen++
+        if (msTen < 10) {
+            msTens.innerText = msTen
+        } else  if ((msTen === 10) && (msHuns < 9)) {
+            msTen = 0           
+            msTens.innerText = msTen
+            msHuns++
+            msHundreds.innerText = msHuns
+
+        } else if ((msHuns === 9) && (secs < 19)) {
+            msTen = 0           
+            msTens.innerText = msTen
+            msHuns = 0
+            msHundreds.innerText = msHuns
+            secs ++
+            seconds.innerText = secs
+        } else {
+            msTen = 0           
+            msTens.innerText = msTen
+            msHuns = 0
+            msHundreds.innerText = msHuns
+            secs = 0
+            seconds.innerText = secs
+            clearInterval(microTens)
+            clearInterval(gameStart)
+            clearInterval(gameRunning)
+        }
+    }
+    microTens = setInterval(secondsCounter, 10)
+}
+
+
+// starting the game
 const start = () => {
     gameStart = setInterval(boxPicker, 1000)
     gameRunning = setInterval(lineMover, 150) 
+    clockTimer()
 }
 
+// stopping the game
 const stop = () => {
     clearInterval(gameStart)
     clearInterval(gameRunning)
+    clearInterval(microTens)
 }
+
+
 
 startGame.addEventListener('click', start)
 stopGame.addEventListener('click', stop)
+

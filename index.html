@@ -10,7 +10,15 @@
 </head>
 <body>
     <div id="pointer"></div>
-    <div id="canvas" class="canvas"></div>
+    <div id="board">
+        <div id="canvas" class="canvas"></div>
+        <div id="timer">
+            <div class="time digit" id="seconds">0</div>
+            <div class="time" id="colon">:</div>
+            <div class="time digit" id="ms-hundreds">0</div>
+            <div class="time digit" id="ms-tens">0</div>
+        </div>
+    </div>
     <div id="buttons-div">
         <button id="start" class="buttons">Start</button>
         <button id="stop" class="buttons">Stop</button>
