@@ -106,6 +106,7 @@ const hop = (e) => {
 
 
 const jump = (e) => {
+    console.log(e)
     jumpTimerId = setInterval(() => {
         pointerBottomSpace = e.target.offsetTop    
         // otherPointerBottomSpace = e.target.offsetTop - 10
@@ -173,16 +174,26 @@ const clockTimer = () => {
 
 // starting the game
 const start = () => {
-    gameStart = setInterval(boxPicker, 1000)
-    gameRunning = setInterval(lineMover, 150) 
-    clockTimer()
+    if(!theCanvas.classList.contains('game-started')) {
+        theCanvas.classList.add('game-started')
+        gameStart = setInterval(boxPicker, 1000)
+        gameRunning = setInterval(lineMover, 150) 
+        clockTimer()
+    } else {
+        console.log('game already running')
+    }
 }
 
 // stopping the game
 const stop = () => {
-    clearInterval(gameStart)
-    clearInterval(gameRunning)
-    clearInterval(microTens)
+    if(theCanvas.classList.contains('game-started')) {
+        theCanvas.classList.remove('game-started')
+        clearInterval(gameStart)
+        clearInterval(gameRunning)
+        clearInterval(microTens)
+    } else {
+        console.log('Game has not started')
+    }
 }
 
 
