@@ -178,6 +178,11 @@ const clockTimer = () => {
             clearInterval(gameStart)
             clearInterval(gameRunning)
         theCanvas.classList.remove('game-started')
+        canvasArray.forEach(div => {
+            div.classList.remove('light-catcher')
+            div.classList.remove('selected')
+            greenBox = "Empty"
+        })
 
         }
     }
