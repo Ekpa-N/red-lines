@@ -6,6 +6,7 @@ let fallTimerId
 let jumpTimerId
 const startGame = document.getElementById('start')
 const stopGame = document.getElementById('stop')
+let greenBox = "Empty"
 
 
 
@@ -28,8 +29,9 @@ const boxPicker = () => {
     }
     const number = Math.floor((Math.random() * 100))
     canvasArray[number].classList.add('selected')
+    greenBox = canvasArray[number]
+    console.log(greenBox.offsetLeft)
 }
-// setInterval(boxPicker, 1000);
 
 
 // function that creates the lines and moves it
@@ -53,7 +55,9 @@ const lineTag = (anArray, counter) => {
 lineTag([], counter=0)
 
 console.log(lineMakerArray)
+// console.log(canvasArray)
 canvasArray = Array.from(canvasArray)
+// console.log(canvasArray)
 
 
 
@@ -107,9 +111,16 @@ const hop = (e) => {
 
 const jump = (e) => {
     console.log(e)
+    console.log(e.target.offsetLeft)
+    console.log(e.target.offsetTop)
+    if((e.target.offsetLeft > greenBox.offsetLeft) && (e.target.offsetLeft < (greenBox.offsetLeft+52)) &&
+    (e.target.offsetTop > greenBox.offsetTop) && (e.target.offsetTop < (greenBox.offsetTop+52))) {
+        console.log('Green Box Clicked')
+    } else if (greenBox === "Empty") {
+        console.log(greenBox)
+    } else {console.log("Not a Green Box")}
     jumpTimerId = setInterval(() => {
-        pointerBottomSpace = e.target.offsetTop    
-        // otherPointerBottomSpace = e.target.offsetTop - 10
+        pointerBottomSpace = e.target.offsetTop            
         thePointer.style.top = pointerBottomSpace -10 +'px'
         upTimerId.push(pointerBottomSpace)
         if (upTimerId.length === 1) {
@@ -166,6 +177,8 @@ const clockTimer = () => {
             clearInterval(microTens)
             clearInterval(gameStart)
             clearInterval(gameRunning)
+        theCanvas.classList.remove('game-started')
+
         }
     }
     microTens = setInterval(secondsCounter, 10)
@@ -176,7 +189,7 @@ const clockTimer = () => {
 const start = () => {
     if(!theCanvas.classList.contains('game-started')) {
         theCanvas.classList.add('game-started')
-        gameStart = setInterval(boxPicker, 1000)
+        gameStart = setInterval(boxPicker, 3000)
         gameRunning = setInterval(lineMover, 150) 
         clockTimer()
     } else {
