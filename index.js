@@ -30,7 +30,6 @@ const boxPicker = () => {
     const number = Math.floor((Math.random() * 100))
     canvasArray[number].classList.add('selected')
     greenBox = canvasArray[number]
-    console.log(greenBox.offsetLeft)
 }
 
 
@@ -63,6 +62,19 @@ canvasArray = Array.from(canvasArray)
 
 let counterTwo = 0
 let counterThree = 9
+
+const checkPosition = (div, pointer) => {
+    if((pointer.offsetLeft > div.offsetLeft) && (pointer.offsetLeft < (div.offsetLeft+52)) &&
+    (pointer.offsetTop > div.offsetTop) && (pointer.offsetTop < (div.offsetTop+52)) &&
+    (pointer.classList.contains('jumping'))) {
+        console.log("Dodged")
+    } else if((pointer.offsetLeft > div.offsetLeft) && (pointer.offsetLeft < (div.offsetLeft+52)) &&
+    (pointer.offsetTop > div.offsetTop) && (pointer.offsetTop < (div.offsetTop+52)) &&
+    (!pointer.classList.contains('jumping'))) {
+        console.log("Caught")
+    }
+}
+
 const lineMover = () => {
     if (counterTwo < 10) {
         canvasArray.forEach(div => {   
@@ -70,6 +82,7 @@ const lineMover = () => {
         })
         lineMakerArray[counterTwo].forEach((number) => {
             canvasArray[number].classList.add('light-catcher')
+            checkPosition(canvasArray[number],thePointer)
         })        
         counterTwo = counterTwo + 1
     } else if((counterTwo > 9) && (counterTwo < 20)) {
@@ -79,6 +92,7 @@ const lineMover = () => {
         })        
         lineMakerArray[counterThree].forEach((number) => {
                 canvasArray[number].classList.add('light-catcher')
+                checkPosition(canvasArray[number],thePointer)
         })        
         counterTwo = counterTwo + 1
         counterThree = counterThree - 1
@@ -90,54 +104,75 @@ const lineMover = () => {
         })
         lineMakerArray[counterTwo].forEach((number) => {
             canvasArray[number].classList.add('light-catcher')
+            checkPosition(canvasArray[number],thePointer)
         })        
         counterTwo = counterTwo + 1
     }
 }
-// setInterval(lineMover, 150) 
 
 // moving the pointer
-const onMouseMove = (e) =>{
-    thePointer.style.left = e.pageX + 'px';
-    thePointer.style.top = e.pageY + 'px';
-  }
 
-theCanvas.addEventListener('mousemove', onMouseMove);
-const hop = (e) => {
-    let newT = e.target.offsetTop
-    thePointer.style.top = newT - 10 + 'px'
+const onMouseMove = (e) => {
+    thePointer.style.left = e.pageX + 'px';
+    thePointer.style.top = e.pageY + 'px'; 
 }
+const onMouseEnter = (e) =>{     
+    theCanvas.addEventListener('mousemove', onMouseMove)              
+ }
+
+thePointer.addEventListener('mouseenter', onMouseEnter);
+// const hop = (e) => {
+//     let newT = e.target.offsetTop
+//     thePointer.style.top = newT - 10 + 'px'
+// }
 
 
 const jump = (e) => {
-    console.log(e)
-    console.log(e.target.offsetLeft)
-    console.log(e.target.offsetTop)
+    // console.log(e)
+    // console.log(e.target.offsetLeft)
+    // console.log(thePointer.style.left)
+    // console.log(e.target.offsetTop)
+    theCanvas.removeEventListener('mousemove', onMouseMove)
+    e.target.classList.add('jumping')
     if((e.target.offsetLeft > greenBox.offsetLeft) && (e.target.offsetLeft < (greenBox.offsetLeft+52)) &&
     (e.target.offsetTop > greenBox.offsetTop) && (e.target.offsetTop < (greenBox.offsetTop+52))) {
-        console.log('Green Box Clicked')
+        boxPicker()
     } else if (greenBox === "Empty") {
-        console.log(greenBox)
-    } else {console.log("Not a Green Box")}
-    jumpTimerId = setInterval(() => {
-        pointerBottomSpace = e.target.offsetTop            
-        thePointer.style.top = pointerBottomSpace -10 +'px'
-        upTimerId.push(pointerBottomSpace)
-        if (upTimerId.length === 1) {
-            fall()
-        }     
-    }, 100)
+        jumpTimerId = setInterval(() => {       
+            pointerBottomSpace = e.target.offsetTop            
+            thePointer.style.top = pointerBottomSpace -10 +'px'
+            upTimerId.push(pointerBottomSpace)
+            if (upTimerId.length === 5) {
+                // console.log(e.target.classList.contains('jumping'))
+                fall(e.target)
+            }     
+        }, 50)
+    } else {
+        jumpTimerId = setInterval(() => {       
+            pointerBottomSpace = e.target.offsetTop            
+            thePointer.style.top = pointerBottomSpace -10 +'px'
+            upTimerId.push(pointerBottomSpace)
+            if (upTimerId.length === 5) {
+                // console.log(e.target.classList.contains('jumping'))
+                fall(e.target)
+            }     
+        }, 50)
+    }
+    
 }
 
-const fall = () => {
+const fall = (target) => {
     clearInterval(jumpTimerId)
-    fallTimerId = setInterval(() => {
+    fallTimerId = setInterval(() => {        
         newPointerBottomSpace = upTimerId.pop()
         thePointer.style.top = newPointerBottomSpace + 'px'
         if(upTimerId.length === 0) {
             clearInterval(fallTimerId)
+            target.classList.remove('jumping')
+            // console.log(target.classList.contains('jumping'))
+            upTimerId = []
         }
-    },100)
+    },70)
 }
 thePointer.addEventListener('click', jump)   
 
@@ -160,7 +195,7 @@ const clockTimer = () => {
             msHuns++
             msHundreds.innerText = msHuns
 
-        } else if ((msHuns === 9) && (secs < 19)) {
+        } else if ((msHuns === 9) && (secs < 40)) {
             msTen = 0           
             msTens.innerText = msTen
             msHuns = 0
@@ -195,7 +230,7 @@ const start = () => {
     if(!theCanvas.classList.contains('game-started')) {
         theCanvas.classList.add('game-started')
         gameStart = setInterval(boxPicker, 3000)
-        gameRunning = setInterval(lineMover, 150) 
+        gameRunning = setInterval(lineMover, 160) 
         clockTimer()
     } else {
         console.log('game already running')

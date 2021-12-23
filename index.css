@@ -14,7 +14,7 @@
     height: 50px;
     background-color: blueviolet;
     border: solid green 1px;
-    border-radius: 10px;
+    /* border-radius: 10px; */
 }
 
 .light-catcher {
